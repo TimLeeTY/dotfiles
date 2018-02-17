@@ -183,5 +183,11 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l 
 
 " excute current buffer with <F9>
-autocmd FileType python nnoremap <buffer> <F9> :exec '!python3' shellescape(@%, 1)<cr>
+autocmd FileType python nnoremap <buffer> <F9> :w <cr> :exec '!python3' shellescape(@%, 1)<cr>
 "------------------------------------------------------------
+"Powerline status addin
+"
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+
