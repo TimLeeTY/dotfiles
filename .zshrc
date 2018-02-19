@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
+export ZSH=/Users/timlee/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -108,10 +108,4 @@ source $ZSH/oh-my-zsh.sh
 prompt_dir() {
   prompt_segment blue black '%2~'
 }
-source ~/usr/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# Rebinding escape to capslock
-
-xmodmap -e "remove Lock = Caps_Lock"
-xmodmap -e "keycode 9 = Caps_Lock NoSymbol Caps_Lock"
-xmodmap -e "keycode 66 = Escape NoSymbol Escape"
+source /usr/local/Cellar/zsh-syntax-highlighting/0.6.0/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
