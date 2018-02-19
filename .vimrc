@@ -184,6 +184,7 @@ map <C-l> <C-w>l
 
 " execute current buffer with <F9> using vim-dispatch asynchronously
 autocmd FileType python nnoremap <buffer> <F9> :w <cr> :exec 'Start! python3' shellescape(@%,1) <cr>
+autocmd FileType python inoremap <buffer> <F9> :w <cr> :exec 'Start! python3' shellescape(@%,1) <cr>
 "------------------------------------------------------------
 "
 "jedi autocompletion preferences
