@@ -41,6 +41,12 @@ filetype indent plugin on
  
 " Enable syntax highlighting
 syntax on
+
+" Enable spell check, and set spell language to en_gb
+set spell spelllang=en_gb
+
+" Enable pathogen package manager, automatically loads bundles from
+" ~/.vim/bundle
 execute pathogen#infect()
  
 "------------------------------------------------------------
@@ -171,7 +177,6 @@ set expandtab
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
 map Y y$
-map <Enter> o <ESC>
 map <S-Enter> <ESC>
 
 " Map <C-L> (redraw screen) to also turn off search highlighting until the
@@ -186,14 +191,28 @@ map <C-l> <C-w>l
 autocmd FileType python nnoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
 autocmd FileType python inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
 "------------------------------------------------------------
-"
+" Python-mode settings:
+"------------------------------------------------------------
+" Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
+
+" Maximum line length
+let g:pymode_options_max_line_length =120
+let g:pymode_lint_options_pyflakes = { 'builtins': '_' }
+let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
+let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
+"-----------------------------------------------------------
+
 "jedi autocompletion preferences
 
 let g:jedi#popup_on_dot = 0
 
 "Powerline status addin
-"
+
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
 
+" vim-pandoc enable modules
+let g:pandoc#modules#disabled = ["folding"]
