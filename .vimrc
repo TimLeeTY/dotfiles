@@ -145,7 +145,9 @@ set notimeout ttimeout ttimeoutlen=200
 set pastetoggle=<F11>
  
 set clipboard=unnamed
- 
+
+" Enable spellcheck
+set spell 
 "------------------------------------------------------------
 " Indentation options {{{1
 "
@@ -170,8 +172,7 @@ set expandtab
  
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
-map Y y$
-map <Enter> o <ESC>
+map Y Vy
 map <S-Enter> <ESC>
 
 " Map <C-L> (redraw screen) to also turn off search highlighting until the
@@ -183,12 +184,26 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l 
 
 " execute current buffer with <F9> using vim-dispatch asynchronously
-autocmd FileType python nnoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
+autocmd FileType python nnoremap <buffer> <F9> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
 autocmd FileType python inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
 "------------------------------------------------------------
 "
+" Python-mode settings:
+"------------------------------------------------------------
+" Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
+
+" Maximum line length
+let g:pymode_options_max_line_length =120
+let g:pymode_lint_options_pyflakes = { 'builtins': '_' }
+let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
+let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
+"
+"-----------------------------------------------------------
 "jedi autocompletion preferences
 
+let g:jedi#auto_initialization = 0
 let g:jedi#popup_on_dot = 0
 
 "Powerline status addin
@@ -197,3 +212,11 @@ python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
 
+" Python-mode options
+"
+" Default python3
+let g:pymode_python = 'python3'
+
+" Write and run vim-pandoc :Pandoc
+autocmd FileType markdown inoremap <buffer> <F9> :w <cr> :exec 'Pandoc pdf' <cr>
+autocmd FileType markdown nnoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Pandoc pdf' <cr>
