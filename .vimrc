@@ -176,7 +176,7 @@ set expandtab
  
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
-map Y y$
+map Y Vy
 map <S-Enter> <ESC>
 
 " Map <C-L> (redraw screen) to also turn off search highlighting until the
@@ -190,6 +190,7 @@ map <C-l> <C-w>l
 " execute current buffer with <F9> using vim-dispatch asynchronously
 autocmd FileType python nnoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
 autocmd FileType python inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
+autocmd FileType python vnoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
 "------------------------------------------------------------
 " Python-mode settings:
 "------------------------------------------------------------
@@ -216,3 +217,10 @@ python3 del powerline_setup
 
 " vim-pandoc enable modules
 let g:pandoc#modules#disabled = ["folding"]
+
+" vim indent guide settings
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
+hi IndentGuidesOdd  ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
