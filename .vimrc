@@ -201,11 +201,6 @@ let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_l
 let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
 "
 "-----------------------------------------------------------
-"jedi autocompletion preferences
-
-let g:jedi#auto_initialization = 0
-let g:jedi#popup_on_dot = 0
-
 "Powerline status addin
 "
 python3 from powerline.vim import setup as powerline_setup
@@ -220,3 +215,13 @@ let g:pymode_python = 'python3'
 " Write and run vim-pandoc :Pandoc
 autocmd FileType markdown inoremap <buffer> <F9> :w <cr> :exec 'Pandoc pdf' <cr>
 autocmd FileType markdown nnoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Pandoc pdf' <cr>
+
+" vim-indent-guides settings
+" enable by default
+set ts=4 sw=4 et
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=238
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
