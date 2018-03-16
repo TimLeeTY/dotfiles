@@ -41,7 +41,7 @@ filetype indent plugin on
  
 " Enable syntax highlighting
 syntax on
-execute pathogen#infect()
+highlight Comment cterm=italic
  
 "------------------------------------------------------------
 " Must have options {{{1
@@ -75,8 +75,7 @@ set wildmenu
 " Show partial commands in the last line of the screen
 set showcmd
  
-" Highlight searches (use <C-L> to temporarily turn off highlighting; see the
-" mapping of <C-L> below)
+" Highlight searches 
 set hlsearch
  
 " Modelines have historically been a source of security vulnerabilities. As
@@ -141,16 +140,11 @@ set number
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
  
-" Use <F11> to toggle between 'paste' and 'nopaste'
-set pastetoggle=<F11>
- 
 set clipboard=unnamed
 
 " Enable spellcheck
 set spell 
 "------------------------------------------------------------
-" Indentation options {{{1
-"
 " Indentation settings according to personal preference.
  
 " Indentation settings for using 4 spaces instead of tabs.
@@ -172,22 +166,24 @@ set expandtab
  
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
-map Y Vy
-map <S-Enter> <ESC>
+map Y y$
 
-" Map <C-L> (redraw screen) to also turn off search highlighting until the
-" next search
-nnoremap <C-L> :nohl<CR><C-L>
+" Map <C-hjkl> to navigate between split panes
 map <C-h> <C-w>h 
 map <C-j> <C-w>j 
 map <C-k> <C-w>k 
 map <C-l> <C-w>l 
 
-" execute current buffer with <F9> using vim-dispatch asynchronously
-autocmd FileType python nnoremap <buffer> <F9> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
-autocmd FileType python inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
+" Map <F4> to act like <C-l> (redraw screen) and turn off search highlighting until the
+" next search
+nnoremap <F4> :nohl <CR> :redr! <CR> 
+
 "------------------------------------------------------------
-"
+" Plugins and options:
+"------------------------------------------------------------
+execute pathogen#infect()
+
+"------------------------------------------------------------
 " Python-mode settings:
 "------------------------------------------------------------
 " Linting
@@ -199,24 +195,38 @@ let g:pymode_options_max_line_length =120
 let g:pymode_lint_options_pyflakes = { 'builtins': '_' }
 let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
 let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
-"
+
+" Default python3
+let g:pymode_python = 'python3'
+let g:pymode_rope = 1
+let g:pymode_rope_regenerate_on_write = 1
+let g:pymode_rope_complete_on_dot = 0
+let g:pymode_rope_rename_bind = '<C-c>rr'
+
+
 "-----------------------------------------------------------
 "Powerline status addin
-"
+"------------------------------------------------------------
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
 
-" Python-mode options
-"
-" Default python3
-let g:pymode_python = 'python3'
+"-----------------------------------------------------------
+" Vim-dispatch settings
+"------------------------------------------------------------
+" execute current buffer with <F9> using vim-dispatch asynchronously
+autocmd FileType python nnoremap <buffer> <F9> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
+autocmd FileType python inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
 
+"------------------------------------------------------------
 " Write and run vim-pandoc :Pandoc
+"------------------------------------------------------------
 autocmd FileType markdown inoremap <buffer> <F9> :w <cr> :exec 'Pandoc pdf' <cr>
 autocmd FileType markdown nnoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Pandoc pdf' <cr>
 
+"------------------------------------------------------------
 " vim-indent-guides settings
+"------------------------------------------------------------
 " enable by default
 set ts=4 sw=4 et
 let g:indent_guides_enable_on_vim_startup = 1
