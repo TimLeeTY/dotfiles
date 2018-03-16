@@ -1,8 +1,5 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-#
-# enable vi mode commands
-bindkey -v
 
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/timlee/.oh-my-zsh
@@ -11,6 +8,11 @@ export ZSH=/Users/timlee/.oh-my-zsh
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
+
+#
+# enable vi mode commands
+bindkey -v
+export KEYTIMEOUT=1
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -63,6 +65,7 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  vi-mode-agnoster
 )
 
 source $ZSH/oh-my-zsh.sh
