@@ -45,6 +45,8 @@ syntax on
 " Enable spell check, and set spell language to en_gb
 set spell spelllang=en_gb
 
+set t_ZH=^[[3m
+set t_ZR=^[[23m
 "------------------------------------------------------------
 " Must have options {{{1
 "
