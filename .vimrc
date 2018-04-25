@@ -178,6 +178,10 @@ map <C-l> <C-w>l
 " next search
 nnoremap <F4> :nohl <CR> :redr! <CR> 
 
+" Map <Leader> to space
+let mapleader = " "
+let maplocalleader = " "
+
 "------------------------------------------------------------
 " Plugins and options:
 "------------------------------------------------------------
@@ -221,9 +225,16 @@ autocmd FileType python inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start pytho
 "------------------------------------------------------------
 " Write and run vim-pandoc :Pandoc
 "------------------------------------------------------------
-autocmd FileType markdown inoremap <buffer> <F9> :w <cr> :exec 'Pandoc pdf' <cr>
-autocmd FileType markdown nnoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Pandoc pdf' <cr>
 
+command! -nargs=* RunSilent
+      \ | execute ':silent !'.'<args>'
+      \ | execute ':redraw!'
+autocmd FileType markdown nnoremap <F5> :w <cr> :RunSilent pandoc -o ./vim-pandoc-out.pdf --top-level-division=chapter % <cr>
+
+autocmd FileType markdown nnoremap <buffer> <F9> :w <cr> :exec 'Pandoc pdf' <cr>
+autocmd FileType markdown inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Pandoc pdf' <cr>
+
+let g:pandoc#syntax#conceal#use = 0
 "------------------------------------------------------------
 " vim-indent-guides settings
 "------------------------------------------------------------

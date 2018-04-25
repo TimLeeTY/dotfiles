@@ -13,6 +13,11 @@ ZSH_THEME="agnoster"
 # enable vi mode commands
 bindkey -v
 export KEYTIMEOUT=1
+bindkey -M vicmd 'k' up-line-or-search
+bindkey -M vicmd 'j' down-line-or-search
+
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -114,4 +119,6 @@ source $ZSH/oh-my-zsh.sh
 prompt_dir() {
   prompt_segment blue black '%2~'
 }
+
+# zsh bash syntax highlighting
 source /usr/local/Cellar/zsh-syntax-highlighting/0.6.0/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
