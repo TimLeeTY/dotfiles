@@ -9,6 +9,16 @@ export ZSH=~/.oh-my-zsh
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
 
+#
+# enable vi mode commands
+bindkey -v
+export KEYTIMEOUT=1
+bindkey -M vicmd 'k' up-line-or-search
+bindkey -M vicmd 'j' down-line-or-search
+
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
 # cause zsh load theme from this variable instead of
@@ -60,6 +70,7 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  vi-mode-agnoster
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -109,10 +120,12 @@ export PATH=/home/tyl35/bin:$PATH
 prompt_dir() {
   prompt_segment blue black '%2~'
 }
-source ~/usr/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Rebinding escape to capslock
 
 xmodmap -e "remove Lock = Caps_Lock"
 xmodmap -e "keycode 9 = Caps_Lock NoSymbol Caps_Lock"
 xmodmap -e "keycode 66 = Escape NoSymbol Escape"
+
+# zsh bash syntax highlighting
+source ~/usr/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
