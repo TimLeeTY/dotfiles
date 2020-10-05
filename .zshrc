@@ -119,6 +119,7 @@ source $ZSH/oh-my-zsh.sh
 prompt_dir() {
   prompt_segment blue black '%2~'
 }
+export DEFAULT_USER="timlee"
 
 # zsh bash syntax highlighting
 source /usr/local/Cellar/zsh-syntax-highlighting/0.6.0/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
