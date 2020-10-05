@@ -41,7 +41,7 @@ filetype indent plugin on
  
 " Enable syntax highlighting
 syntax on
-highlight Comment cterm=italic
+highlight Comment cterm=italic gui=italic
  
 "------------------------------------------------------------
 " Must have options {{{1
@@ -142,8 +142,9 @@ set notimeout ttimeout ttimeoutlen=200
  
 set clipboard=unnamed
 
-" Enable spellcheck
-set spell 
+
+" Enable relative line numbers
+set relativenumber
 "------------------------------------------------------------
 " Indentation settings according to personal preference.
  
@@ -177,6 +178,10 @@ map <C-l> <C-w>l
 " Map <F4> to act like <C-l> (redraw screen) and turn off search highlighting until the
 " next search
 nnoremap <F4> :nohl <CR> :redr! <CR> 
+"
+"
+" Map <10> to write
+nnoremap <F10> :w <CR> 
 
 " Map <Leader> to space
 let mapleader = " "
@@ -195,7 +200,7 @@ let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
 
 " Maximum line length
-let g:pymode_options_max_line_length =120
+let g:pymode_options_max_line_length =100
 let g:pymode_lint_options_pyflakes = { 'builtins': '_' }
 let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
 let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
@@ -209,18 +214,14 @@ let g:pymode_rope_rename_bind = '<C-c>rr'
 
 
 "-----------------------------------------------------------
-"Powerline status addin
-"------------------------------------------------------------
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
-
-"-----------------------------------------------------------
 " Vim-dispatch settings
 "------------------------------------------------------------
 " execute current buffer with <F9> using vim-dispatch asynchronously
-autocmd FileType python nnoremap <buffer> <F9> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
-autocmd FileType python inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
+autocmd FileType python nnoremap <buffer> <F9> :PymodeLintAuto <cr> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
+autocmd FileType python inoremap <buffer> <F9> <ESC> :PymodeLintAuto <cr> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
+
+autocmd FileType python nnoremap <buffer> <F10> :PymodeLintAuto <cr> :w <cr>
+autocmd FileType python inoremap <buffer> <F10> <ESC> :PymodeLintAuto <cr> :w <cr>
 
 "------------------------------------------------------------
 " Write and run vim-pandoc :Pandoc
@@ -233,6 +234,9 @@ autocmd FileType markdown nnoremap <F5> :w <cr> :RunSilent pandoc -o ./vim-pando
 
 autocmd FileType markdown nnoremap <buffer> <F9> :w <cr> :exec 'Pandoc pdf' <cr>
 autocmd FileType markdown inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Pandoc pdf' <cr>
+"
+" Enable spellcheck
+autocmd FileType markdown set spell 
 
 let g:pandoc#syntax#conceal#use = 0
 "------------------------------------------------------------
@@ -246,3 +250,13 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=238
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
+
+
+" set macvim font
+set gfn=Meslo\ LG\ M\ for\ Powerline
+"
+"------------------------------------------------------------
+" airline settings 
+"------------------------------------------------------------
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'bubblegum'
