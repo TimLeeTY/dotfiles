@@ -1,0 +1,18 @@
+return {
+  after = "nvim-treesitter",
+  config = function()
+    require'nvim-treesitter'.setup({
+      rainbow = {
+        enable = true,
+        disable = {"html"},
+        extended_mode = true,
+        max_file_lines = nil,
+        colors = {C.red_5, C.red_4, C.cyan, C.grey, C.orange, C.yellow_1, C.red_4}
+        -- colors = {
+        --   "#a89984", "#cc241d", "#b16286", "#d79921", "#689d6a", "#d65d0e",
+        --   "#458588"
+        -- },
+      }
+    })
+  end
+}

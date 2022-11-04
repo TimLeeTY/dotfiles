@@ -178,10 +178,15 @@ map <C-l> <C-w>l
 " Map <F4> to act like <C-l> (redraw screen) and turn off search highlighting until the
 " next search
 nnoremap <F4> :nohl <CR> :redr! <CR> 
+
+map <Leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 "
 "
 " Map <10> to write
 nnoremap <F10> :w <CR> 
+
 
 " Map <Leader> to space
 let mapleader = " "
@@ -192,6 +197,13 @@ let maplocalleader = " "
 "------------------------------------------------------------
 execute pathogen#infect()
 
+
+"------------------------------------------------------------
+" Python Fold settings
+"------------------------------------------------------------
+
+autocmd FileType python setlocal foldenable foldmethod=syntax
+
 "------------------------------------------------------------
 " Python-mode settings:
 "------------------------------------------------------------
@@ -200,7 +212,7 @@ let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
 
 " Maximum line length
-let g:pymode_options_max_line_length =100
+let g:pymode_options_max_line_length =120
 let g:pymode_lint_options_pyflakes = { 'builtins': '_' }
 let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
 let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
@@ -210,18 +222,33 @@ let g:pymode_python = 'python3'
 let g:pymode_rope = 1
 let g:pymode_rope_regenerate_on_write = 1
 let g:pymode_rope_complete_on_dot = 0
+let g:pymode_rope_completion = 0
 let g:pymode_rope_rename_bind = '<C-c>rr'
+let g:pymode_syntax_string_format = 1
 
+
+"------------------------------------------------------------
+" Jedi-vim settings:
+"------------------------------------------------------------
+let g:jedi#popup_on_dot = 0
+let g:jedi#completions_enabled = 1
+let g:jedi#goto_definitions_command = "<localleader>gg"
+
+
+"------------------------------------------------------------
+" Black settings
+"------------------------------------------------------------
+let g:black_linelength = 100
 
 "-----------------------------------------------------------
 " Vim-dispatch settings
 "------------------------------------------------------------
 " execute current buffer with <F9> using vim-dispatch asynchronously
-autocmd FileType python nnoremap <buffer> <F9> :PymodeLintAuto <cr> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
-autocmd FileType python inoremap <buffer> <F9> <ESC> :PymodeLintAuto <cr> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
+autocmd FileType python nnoremap <buffer> <F10> :PymodeLintAuto <cr> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
+autocmd FileType python inoremap <buffer> <F10> <ESC> :PymodeLintAuto <cr> :w <cr> :exec 'Start python3' shellescape(@%,1) <cr>
 
-autocmd FileType python nnoremap <buffer> <F10> :PymodeLintAuto <cr> :w <cr>
-autocmd FileType python inoremap <buffer> <F10> <ESC> :PymodeLintAuto <cr> :w <cr>
+autocmd FileType python nnoremap <buffer> <F9> :Black <cr> :w <cr>
+autocmd FileType python inoremap <buffer> <F9> <ESC> :Black <cr> :w <cr>
 
 "------------------------------------------------------------
 " Write and run vim-pandoc :Pandoc
@@ -230,7 +257,7 @@ autocmd FileType python inoremap <buffer> <F10> <ESC> :PymodeLintAuto <cr> :w <c
 command! -nargs=* RunSilent
       \ | execute ':silent !'.'<args>'
       \ | execute ':redraw!'
-autocmd FileType markdown nnoremap <F5> :w <cr> :RunSilent pandoc -o ./vim-pandoc-out.pdf --top-level-division=chapter % <cr>
+autocmd FileType markdown nnoremap <F5> :w <cr> :RunSilent pandoc -V geometry:margin=1cm -o ./%:r.pdf --top-level-division=section % <cr>
 
 autocmd FileType markdown nnoremap <buffer> <F9> :w <cr> :exec 'Pandoc pdf' <cr>
 autocmd FileType markdown inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Pandoc pdf' <cr>
@@ -239,6 +266,15 @@ autocmd FileType markdown inoremap <buffer> <F9> <ESC>  :w <cr> :exec 'Pandoc pd
 autocmd FileType markdown set spell 
 
 let g:pandoc#syntax#conceal#use = 0
+let g:pandoc#syntax#codeblocks#embeds#langs = ['python', 'json', 'javascript', 'sh']
+let g:pandoc#completion#bib#mode = 'fallback'
+let g:pandoc#completion#bib#use_preview = 0
+"------------------------------------------------------------
+" Change HTML syntax defaults
+"------------------------------------------------------------
+
+autocmd FileType html set syntax=htmljinja
+
 "------------------------------------------------------------
 " vim-indent-guides settings
 "------------------------------------------------------------
@@ -260,3 +296,91 @@ set gfn=Meslo\ LG\ M\ for\ Powerline
 "------------------------------------------------------------
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'bubblegum'
+
+"------------------------------------------------------------
+" NERDTree settings 
+"------------------------------------------------------------
+map <C-n> :NERDTreeToggle<CR>
+
+"------------------------------------------------------------
+" Split Resizing
+"------------------------------------------------------------
+
+nnoremap <silent><Leader>+ :<C-u>exe "vertical resize +". (10*v:count1) <CR>
+nnoremap <silent><Leader>- :<C-u>exe "vertical resize -". (10*v:count1) <CR>
+
+"------------------------------------------------------------
+" vim-go settings
+"------------------------------------------------------------
+
+autocmd FileType go nnoremap <buffer> <F9> :GoFmt <cr> :w <cr> :GoLint <cr>  :GoVet <cr>
+autocmd FileType go inoremap <buffer> <F9> <ESC> :GoFmt <cr> :w <cr> :GoLint <cr>  :GoVet <cr>
+autocmd FileType go nnoremap <silent><Leader>gg :GoDef <cr>
+
+" go automcomplete via omnicomplete
+autocmd FileType go inoremap <C-Space> <C-x><C-o>
+
+let g:go_fmt_command = 'gofmt'
+let g:go_fmt_autosave = 0
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+
+
+
+"------------------------------------------------------------
+" json hotkeys
+"------------------------------------------------------------
+"auto lint json file
+
+autocmd FileType json nnoremap <F9> :%!jq --indent 4 . <cr> :w <cr> 
+autocmd FileType json inoremap <F9> :%!jq --indent 4 . <cr> :w <cr> 
+
+"------------------------------------------------------------
+" yaml settings
+"------------------------------------------------------------
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+"------------------------------------------------------------
+" FZF settings 
+"------------------------------------------------------------
+"FZF package
+set rtp+=/opt/homebrew/opt/fzf
+
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
+
+
+" Customize fzf colors to match your color scheme
+" - fzf#wrap translates this to a set of `--color` options
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--bind=up:preview-up,down:preview-down', '--info=inline']}), <bang>0)
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview({'options': ['--bind=up:preview-up,down:preview-down', '--info=inline']}), <bang>0)
+
+command! -bang -nargs=* History
+  \ call fzf#vim#history(fzf#vim#with_preview({'options': ['--bind=up:preview-up,down:preview-down', '--info=inline']}), <bang>0)
+
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,fzf#vim#with_preview({'options': ['--bind=up:preview-up,down:preview-down', '--info=inline']}), <bang>0)
+
+map <C-f> :Ag <CR>
+
+map <Leader>o :Rg <CR>
+
