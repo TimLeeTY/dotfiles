@@ -1,8 +1,22 @@
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+#Add powerline to vim
+#. /usr/local/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
+
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/Library/Python/3.8/bin:$HOME/Library/bin:$HOME/go/bin:$PATH"
+export MYVIMRC="$HOME/.config/nvim/init.lua"
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/timlee/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -70,16 +84,11 @@ bindkey '^h' backward-delete-char
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  vi-mode-agnoster
+  vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
 
-#Add powerline to vim
-
-
-#Add powerline to vim
-#. /usr/local/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
 
 
 #echo -e "\033]6;1;bg;red;brightness;32\a"
@@ -119,7 +128,37 @@ source $ZSH/oh-my-zsh.sh
 prompt_dir() {
   prompt_segment blue black '%2~'
 }
-export DEFAULT_USER="timlee"
+
+export DEFAULT_USER='timothy'
 
 # zsh bash syntax highlighting
-source /usr/local/Cellar/zsh-syntax-highlighting/0.6.0/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+# BAT syntax highlighting color scheme
+export BAT_THEME='OneHalfDark'
+
+# Add pretty_csv shell script alias
+alias pretty_csv='~/.bash.d/pretty_csv.sh'
+
+[[ -s "/Users/timothy/.gvm/scripts/gvm" ]] && source "/Users/timothy/.gvm/scripts/gvm"
+
+export GOPATH="$HOME/go"
+export GOBIN="$GOPATH/bin:/bin"
+
+if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+    autoload -Uz compinit
+    compinit
+fi
+
+# imagemagick path from homebrew
+export MAGICK_HOME=/opt/homebrew/opt/imagemagick/
+# export PATH="/opt/homebrew/opt/imagemagick/bin:$PATH"
