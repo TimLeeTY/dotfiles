@@ -85,6 +85,7 @@ bindkey '^h' backward-delete-char
 plugins=(
   git
   vi-mode
+  zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -133,6 +134,7 @@ export DEFAULT_USER='timothy'
 
 # zsh bash syntax highlighting
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#4F4F4F"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
